@@ -1,14 +1,31 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+
 include '../config/connection.php';
 
-$user_id  = $_POST['user_id'];
-$movie_id = $_POST['movie_id'];
+// Menangkap data POST
+$user_id  = isset($_POST['user_id']) ? $_POST['user_id'] : '';
+$movie_id = isset($_POST['movie_id']) ? $_POST['movie_id'] : '';
 
-$query = "DELETE FROM favorites WHERE user_id='$user_id' AND movie_id='$movie_id'";
+if (!empty($user_id) && !empty($movie_id)) {
+    // Gunakan (int) untuk memastikan movie_id adalah angka, bukan teks
+    $m_id = (int)$movie_id;
+    $u_id = mysqli_real_escape_string($conn, $user_id); // Keamanan tambahan
 
-if (mysqli_query($connect, $query)) {
-    echo json_encode(["status" => "success", "message" => "Berhasil dihapus"]);
+    $query = "DELETE FROM favorites WHERE user_id = '$u_id' AND movie_id = $m_id";
+    
+    if (mysqli_query($conn, $query)) {
+        // Cek apakah ada baris yang benar-benar terhapus
+        if (mysqli_affected_rows($conn) > 0) {
+            echo json_encode(["status" => "success", "message" => "Dihapus dari watchlist"]);
+        } else {
+            echo json_encode(["status" => "error", "message" => "Data tidak ditemukan di database"]);
+        }
+    } else {
+        echo json_encode(["status" => "error", "message" => mysqli_error($conn)]);
+    }
 } else {
-    echo json_encode(["status" => "error", "message" => "Gagal menghapus"]);
+    echo json_encode(["status" => "error", "message" => "Data tidak lengkap: User $user_id, Movie $movie_id"]);
 }
 ?>
