@@ -1,5 +1,5 @@
 <?php
-// MOVIZONE_API/users/update_profile.php
+
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 include "../config/connection.php";
@@ -19,7 +19,7 @@ if (!is_dir($uploadDir)) {
 
 $imageFilename = null;
 
-// Proses upload foto jika ada
+
 if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
     $tmpName  = $_FILES['profile_image']['tmp_name'];
     $origName = $_FILES['profile_image']['name'];
@@ -31,13 +31,13 @@ if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPL
         exit;
     }
 
-    $maxSize = 5 * 1024 * 1024; // 5MB
+    $maxSize = 5 * 1024 * 1024; 
     if ($_FILES['profile_image']['size'] > $maxSize) {
         echo json_encode(["status" => "error", "message" => "Ukuran gambar maksimal 5MB"]);
         exit;
     }
 
-    // Hapus foto lama jika ada
+
     $sqlOld = "SELECT profile_image FROM users WHERE id='$user_id'";
     $resOld = mysqli_query($conn, $sqlOld);
     if ($rowOld = mysqli_fetch_assoc($resOld)) {
@@ -51,7 +51,7 @@ if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPL
     move_uploaded_file($tmpName, $uploadDir . $imageFilename);
 }
 
-// Build query dinamis
+
 if ($imageFilename !== null && $username !== '') {
     $sql = "UPDATE users SET username='$username', profile_image='$imageFilename' WHERE id='$user_id'";
 } elseif ($imageFilename !== null) {
@@ -64,7 +64,7 @@ if ($imageFilename !== null && $username !== '') {
 }
 
 if (mysqli_query($conn, $sql)) {
-    // Ambil data terbaru
+
     $sqlGet = "SELECT username, profile_image FROM users WHERE id='$user_id'";
     $res    = mysqli_query($conn, $sqlGet);
     $user   = mysqli_fetch_assoc($res);

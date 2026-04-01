@@ -14,6 +14,6 @@ while ($row = mysqli_fetch_assoc($result)) {
     $favorites[] = $row['movie_id'];
 }
 
-// WAJIB PAKAI json_encode
+
 echo json_encode($favorites);
 ?>

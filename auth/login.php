@@ -24,8 +24,8 @@ if (mysqli_num_rows($result) > 0) {
         "status"        => "success",
         "user_id"       => $user['id'],
         "email"         => $user['email'],
-        "username"      => $user['username'],       // ← tambah ini
-        "profile_image" => $user['profile_image'],  // ← tambah ini
+        "username"      => $user['username'],       
+        "profile_image" => $user['profile_image'],  
     ]);
 } else {
     echo json_encode([

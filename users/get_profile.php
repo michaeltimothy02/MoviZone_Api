@@ -1,5 +1,5 @@
 <?php
-// MOVIZONE_API/users/get_profile.php
+
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 include "../config/connection.php";

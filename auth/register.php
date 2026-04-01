@@ -24,7 +24,7 @@ if (mysqli_num_rows($check) > 0) {
     exit;
 }
 
-// ← username ikut disimpan ke database
+
 $sql = "INSERT INTO users (email, password, username) VALUES ('$email', '$password', '$username')";
 if (mysqli_query($conn, $sql)) {
     echo json_encode([
