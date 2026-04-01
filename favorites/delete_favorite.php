@@ -4,19 +4,16 @@ header("Content-Type: application/json; charset=UTF-8");
 
 include '../config/connection.php';
 
-// Menangkap data POST
 $user_id  = isset($_POST['user_id']) ? $_POST['user_id'] : '';
 $movie_id = isset($_POST['movie_id']) ? $_POST['movie_id'] : '';
 
 if (!empty($user_id) && !empty($movie_id)) {
-    // Gunakan (int) untuk memastikan movie_id adalah angka, bukan teks
     $m_id = (int)$movie_id;
-    $u_id = mysqli_real_escape_string($conn, $user_id); // Keamanan tambahan
+    $u_id = mysqli_real_escape_string($conn, $user_id); 
 
     $query = "DELETE FROM favorites WHERE user_id = '$u_id' AND movie_id = $m_id";
     
     if (mysqli_query($conn, $query)) {
-        // Cek apakah ada baris yang benar-benar terhapus
         if (mysqli_affected_rows($conn) > 0) {
             echo json_encode(["status" => "success", "message" => "Dihapus dari watchlist"]);
         } else {
